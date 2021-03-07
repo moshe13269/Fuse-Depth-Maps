@@ -15,16 +15,14 @@ import numpy
 from new_model import DepthFuse
 from model_att_v_concat import AUNet
 from my_data_loader import DepthDataset
-# from model_att_v_concat3 import AUNet # 13 weight
 from utils import validation_calc, check_loss_validation
-
 from model_dense_v_concat import DUNet
 
 def main():
     device = torch.device('cuda:1')
     
-    dataset_valid = DepthDataset('/home/moshelaufer/Desktop/DL-course/project2/data_test/',False,dim=1)
-    dataloader_valid = DataLoader(dataset_valid, batch_size=12, shuffle=False)
+    dataset_valid = DepthDataset('/home/moshelaufer/Desktop/DL-course/project2/data_valid/',False,dim=1)
+    dataloader_valid = DataLoader(dataset_valid, batch_size=2, shuffle=False)
     
     
     torch.cuda.empty_cache()
@@ -47,13 +45,12 @@ def main():
     print('start epoch')
     file.write('start epoch\n')      
     lr =0.001
-    dim_arr = [16,32,64]
+    dim_arr = [16,32,64,128,256,512]
     for dim in dim_arr:
         dataset_train = DepthDataset('/home/moshelaufer/Desktop/DL-course/project2/data_train/',True,dim=dim)
         dataloader_train = DataLoader(dataset_train, batch_size=20, shuffle=True)
         train_length = len(dataloader_train)
-        # if dim<128:
-        #     n_epochs=60
+     
         print("dim of pathc = {}".format(dim))
         for epoch in range(1,n_epochs):
             if epoch%40==0:
